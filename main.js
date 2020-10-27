@@ -1,5 +1,6 @@
 // Main Process
-const { app, BrowserWindow, Notification } = require("electron");
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -17,11 +18,9 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
-  const notification = new Notification({
-    title: "Hello World",
-    body: "My test message",
-  });
-  notification.show();
+  const parsed = path.parse("/home/user/dir/file.txt");
+  console.log(parsed.base);
+  console.log(parsed.ext);
 });
 
 app.on("window-all-closed", () => {
