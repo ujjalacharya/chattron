@@ -1,6 +1,5 @@
 // Main Process
 const { app, BrowserWindow } = require("electron");
-const path = require("path");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -8,7 +7,12 @@ function createWindow() {
     height: 800,
     backgroundColor: "white",
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
+      // will sanitize JS code
+      worldSafeExecuteJavaScript: true,
+      // is a feature that ensures that both, our preload scripts and Electron
+      // internal logic run in sparate context
+      contextIsolation: true,
     },
   });
 
@@ -16,12 +20,7 @@ function createWindow() {
   win.webContents.openDevTools();
 }
 
-app.whenReady().then(() => {
-  createWindow();
-  const parsed = path.parse("/home/user/dir/file.txt");
-  console.log(parsed.base);
-  console.log(parsed.ext);
-});
+app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
