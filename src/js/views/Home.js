@@ -10,9 +10,9 @@ import { fetchChats } from "../actions/chats";
 export default function Home() {
   const dispatch = useDispatch();
 
-  const chats = useSelector(({chats}) => {
-    return chats.items
-  })
+  const chats = useSelector(({ chats }) => {
+    return chats.items;
+  });
 
   useEffect(() => {
     dispatch(fetchChats());
@@ -23,12 +23,11 @@ export default function Home() {
       <Navbar />
       <div className="row no-gutters fh">
         <div className="col-3 fh">
-        {console.log(chats)}
-          <JoinedChats />
+          <JoinedChats chats={chats} />
         </div>
         <div className="col-9 fh">
           <ViewTitle />
-          <AvailableChats />
+          <AvailableChats chats={chats} />
         </div>
       </div>
     </div>
