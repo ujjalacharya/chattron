@@ -1,14 +1,22 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    alert(JSON.stringify(data));
+  };
+
   return (
-    <form onSubmit={() => {}} className="centered-container-form">
+    <form onSubmit={handleSubmit(onSubmit)} className="centered-container-form">
       <div className="header">Welcome here!</div>
       <div className="subheader">Login and chat with other people!</div>
       <div className="form-container">
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
+            ref={register}
             type="email"
             className="form-control"
             id="email"
@@ -22,6 +30,7 @@ export default function LoginForm() {
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
+            ref={register}
             type="password"
             name="password"
             className="form-control"

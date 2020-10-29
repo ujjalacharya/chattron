@@ -9,8 +9,6 @@ import configureStore from "./store";
 import Navbar from "./components/Navbar";
 import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
-import LoginView from "./views/Login";
-import RegisterView from "./views/Register";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 
