@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Navbar from "../components/Navbar";
 import JoinedChats from "../components/JoinedChats";
 import AvailableChats from "../components/AvailableChats";
 import ViewTitle from "../components/shared/ViewTitle";
-import { fetchChats } from "../api/chats";
+
+import { fetchChats } from "../actions/chats";
 
 export default function Home() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    fetchChats();
-  }, []);
+    dispatch(fetchChats());
+  }, [dispatch]);
 
   return (
     <div className="content-wrapper">
