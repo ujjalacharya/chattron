@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import JoinedChats from "../components/JoinedChats";
 import AvailableChats from "../components/AvailableChats";
@@ -10,6 +10,10 @@ import { fetchChats } from "../actions/chats";
 export default function Home() {
   const dispatch = useDispatch();
 
+  const chats = useSelector(({chats}) => {
+    return chats.items
+  })
+
   useEffect(() => {
     dispatch(fetchChats());
   }, [dispatch]);
@@ -19,6 +23,7 @@ export default function Home() {
       <Navbar />
       <div className="row no-gutters fh">
         <div className="col-3 fh">
+        {console.log(chats)}
           <JoinedChats />
         </div>
         <div className="col-9 fh">
