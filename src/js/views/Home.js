@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import JoinedChats from "../components/JoinedChats";
 import AvailableChats from "../components/AvailableChats";
 import ViewTitle from "../components/shared/ViewTitle";
+import { fetchChats } from "../api/chats";
 
 export default function Home() {
+  useEffect(() => {
+    fetchChats().then((chats) => {
+      console.log({ chats });
+    });
+  }, []);
+
   return (
     <div className="content-wrapper">
       <Navbar />
