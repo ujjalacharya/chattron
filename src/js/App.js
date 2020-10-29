@@ -12,6 +12,7 @@ import HomeView from "./views/Home";
 import LoginView from "./views/Login";
 import RegisterView from "./views/Register";
 import SettingsView from "./views/Settings";
+import WelcomeView from "./views/Welcome";
 
 const store = configureStore();
 
@@ -25,16 +26,13 @@ export default function App() {
             <Route path="/settings">
               <SettingsView />
             </Route>
-            <Route path="/login">
-              <LoginView />
-            </Route>
-            <Route path="/register">
-              <RegisterView />
-            </Route>
             <Route path="/chat/:id">
               <ChatView />
             </Route>
-            <Route path="/">
+            <Route path="/" exact>
+              <WelcomeView />
+            </Route>
+            <Route path="/home">
               <HomeView />
             </Route>
           </Switch>
