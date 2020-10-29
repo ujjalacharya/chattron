@@ -1,5 +1,5 @@
 // Main Process
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification } = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
 
@@ -9,12 +9,12 @@ function createWindow() {
     height: 800,
     backgroundColor: "white",
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       // will sanitize JS code
-      worldSafeExecuteJavaScript: true,
+      // worldSafeExecuteJavaScript: true,
       // is a feature that ensures that both, our preload scripts and Electron
       // internal logic run in sparate context
-      contextIsolation: true,
+      // contextIsolation: true,
     },
   });
 
@@ -29,6 +29,14 @@ if (isDev) {
 }
 
 app.whenReady().then(createWindow);
+
+ipcMain.on("notify", (_, message) => {
+  new Notification({ title: "Notification", body: message }).show();
+});
+
+ipcMain.on("app-quit", () => {
+  app.quit();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
