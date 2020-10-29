@@ -1,8 +1,12 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-import HomeView from "./views/Home";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import HomeView from "./views/Home";
+import LoginView from "./views/Login";
+import RegisterView from "./views/Register";
+import SettingsView from "./views/Settings";
 
 export default function App() {
   return (
@@ -11,13 +15,13 @@ export default function App() {
       <div className="content-wrapper">
         <Switch>
           <Route path="/settings">
-            <h1>I am Settings View</h1>
+            <SettingsView />
           </Route>
           <Route path="/login">
-            <h1>I am Login View</h1>
+            <LoginView />
           </Route>
           <Route path="/register">
-            <h1>I am Register View</h1>
+            <RegisterView />
           </Route>
           <Route path="/">
             <HomeView />
