@@ -1,11 +1,11 @@
+import db from "../db/firestore";
 import firebase from "firebase/app";
 import "firebase/auth";
-import db from "../db/firestore";
 
 const createUserProfile = (userProfile) =>
   db.collection("profiles").doc(userProfile.uid).set(userProfile);
 
-export async function register({ email, password }) {
+export async function register({ email, password, username, avatar }) {
   try {
     const { user } = await firebase
       .auth()
@@ -22,10 +22,10 @@ export async function register({ email, password }) {
   }
 }
 
-export const logout = () => firebase.auth().signOut()
+export const login = ({ email, password }) =>
+  firebase.auth().signInWithEmailAndPassword(email, password);
 
-export const login = ({email, password}) =>
-  firebase.auth().signInWithEmailAndPassword(email, password)
+export const logout = () => firebase.auth().signOut();
 
 export const onAuthStateChanges = (onAuth) =>
   firebase.auth().onAuthStateChanged(onAuth);

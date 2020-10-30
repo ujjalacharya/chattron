@@ -32,10 +32,10 @@ export default function Navbar() {
             </button>
           ) : (
             <>
-              <span className="logged-in-user">Hi User</span>
               <Link to="/" className="btn btn-outline-success ml-2">
                 Login
               </Link>
+              <span className="logged-in-user">Hi User</span>
             </>
           )}
         </div>
