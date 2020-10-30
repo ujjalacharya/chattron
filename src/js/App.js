@@ -13,7 +13,6 @@ import StoreProvider from "./store/StoreProvider";
 import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
 
-import Navbar from "./components/Navbar";
 import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
 import SettingsView from "./views/Settings";
@@ -56,7 +55,6 @@ export default function App() {
 
     return (
       <Router>
-        <Navbar />
         <ContentWrapper>
           <Switch>
             <Route path="/" exact>
