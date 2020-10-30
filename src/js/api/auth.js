@@ -13,20 +13,16 @@ export const getUserProfile = (uid) =>
     .then((snanpshot) => snanpshot.data());
 
 export async function register({ email, password, username, avatar }) {
-  try {
-    const { user } = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password);
-    await createUserProfile({
-      uid: user.uid,
-      username,
-      email,
-      avatar,
-      joinedChats: [],
-    });
-  } catch (error) {
-    return Promise.reject(error.message);
-  }
+  const { user } = await firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password);
+  await createUserProfile({
+    uid: user.uid,
+    username,
+    email,
+    avatar,
+    joinedChats: [],
+  });
 }
 
 export const login = ({ email, password }) =>
