@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,6 +18,24 @@ import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
+
+function AuthRoute({ children, ...rest }) {
+  const user = useSelector(({ auth }) => auth.user);
+  const onlyChild = React.Children.only(children);
+
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        user ? (
+          React.cloneElement(onlyChild, { ...rest, ...props })
+        ) : (
+          <Redirect to="/" />
+        )
+      }
+    />
+  );
+}
 
 export default function App() {
   const ContentWrapper = ({ children }) => (
@@ -39,15 +62,15 @@ export default function App() {
             <Route path="/" exact>
               <WelcomeView />
             </Route>
-            <Route path="/home">
+            <AuthRoute path="/home">
               <HomeView />
-            </Route>
-            <Route path="/chat/:id">
+            </AuthRoute>
+            <AuthRoute path="/chat/:id">
               <ChatView />
-            </Route>
-            <Route path="/settings">
+            </AuthRoute>
+            <AuthRoute path="/settings">
               <SettingsView />
-            </Route>
+            </AuthRoute>
           </Switch>
         </ContentWrapper>
       </Router>
