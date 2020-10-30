@@ -1,11 +1,12 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Provider } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import configureStore from "./store";
-import { listenToAuthChanges } from './actions/auth';
+import StoreProvider from "./store/StoreProvider";
+import LoadingView from "./components/shared/LoadingView";
+import { listenToAuthChanges } from "./actions/auth";
 
 import Navbar from "./components/Navbar";
 import ChatView from "./views/Chat";
@@ -13,35 +14,49 @@ import HomeView from "./views/Home";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 
-const store = configureStore();
-
 export default function App() {
+  const ContentWrapper = ({ children }) => (
+    <div className="content-wrapper">{children}</div>
+  );
 
-  useEffect(() => {
-    store.dispatch(listenToAuthChanges());
-  }, [])
-  
-  return (
-    <Provider store={store}>
+  function ChatApp() {
+    const dispatch = useDispatch();
+    const isChecking = useSelector(({ auth }) => auth.isChecking);
+
+    useEffect(() => {
+      dispatch(listenToAuthChanges());
+    }, [dispatch]);
+
+    if (isChecking) {
+      return <LoadingView />;
+    }
+
+    return (
       <Router>
         <Navbar />
-        <div className="content-wrapper">
+        <ContentWrapper>
           <Switch>
-            <Route path="/settings">
-              <SettingsView />
-            </Route>
-            <Route path="/chat/:id">
-              <ChatView />
-            </Route>
             <Route path="/" exact>
               <WelcomeView />
             </Route>
             <Route path="/home">
               <HomeView />
             </Route>
+            <Route path="/chat/:id">
+              <ChatView />
+            </Route>
+            <Route path="/settings">
+              <SettingsView />
+            </Route>
           </Switch>
-        </div>
+        </ContentWrapper>
       </Router>
-    </Provider>
+    );
+  }
+
+  return (
+    <StoreProvider>
+      <ChatApp />
+    </StoreProvider>
   );
 }
