@@ -4,7 +4,7 @@ import db from "../db/firestore";
 
 const createUserProfile = (userProfile) =>
   db.collection("profiles").doc(userProfile.uid).set(userProfile);
-  
+
 export async function register({ email, password }) {
   try {
     const { user } = await firebase
@@ -21,3 +21,6 @@ export async function register({ email, password }) {
     return Promise.reject(error.message);
   }
 }
+
+export const onAuthStateChanges = (onAuth) =>
+  firebase.auth().onAuthStateChanged(onAuth);

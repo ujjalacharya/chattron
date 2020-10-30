@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Provider } from "react-redux";
 
 import configureStore from "./store";
+import { listenToAuthChanges } from './actions/auth';
 
 import Navbar from "./components/Navbar";
 import ChatView from "./views/Chat";
@@ -15,6 +16,11 @@ import WelcomeView from "./views/Welcome";
 const store = configureStore();
 
 export default function App() {
+
+  useEffect(() => {
+    store.dispatch(listenToAuthChanges());
+  }, [])
+  
   return (
     <Provider store={store}>
       <Router>
