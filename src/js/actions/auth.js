@@ -9,11 +9,9 @@ export const registerUser = (formData) => (dispatch) => {
 
 export const loginUser = (formData) => (dispatch) => {
   dispatch({ type: "AUTH_LOGIN_INIT" });
-  return api
-    .login(formData)
-    .catch((error) => {
-      dispatch({ type: "AUTH_LOGIN_ERROR", error });
-    });
+  return api.login(formData).catch((error) => {
+    dispatch({ type: "AUTH_LOGIN_ERROR", error });
+  });
 };
 
 export const logout = () => (dispatch) =>
@@ -21,7 +19,7 @@ export const logout = () => (dispatch) =>
 
 export const listenToAuthChanges = () => (dispatch) => {
   dispatch({ type: "AUTH_ON_INIT" });
-  api.onAuthStateChanges(async (authUser) => {
+  return api.onAuthStateChanges(async (authUser) => {
     if (authUser) {
       const userProfile = await api.getUserProfile(authUser.uid);
       dispatch({ type: "AUTH_ON_SUCCESS", user: userProfile });
