@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import StoreProvider from "./store/StoreProvider";
 import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
+import { listenToConnectionChanges } from "./actions/app";
 
 import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
@@ -52,13 +53,11 @@ export default function App() {
     useEffect(() => {
       const unsubFromAuth = dispatch(listenToAuthChanges());
 
-      window.addEventListener("online", alertOnlineStatus);
-      window.addEventListener("offline", alertOnlineStatus);
+      const unsubFromConnection = dispatch(listenToConnectionChanges());
 
       return () => {
         unsubFromAuth();
-        window.removeEventListener("online", alertOnlineStatus);
-        window.removeEventListener("offline", alertOnlineStatus);
+        unsubFromConnection();
       };
     }, [dispatch]);
 
