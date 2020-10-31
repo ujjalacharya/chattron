@@ -45,10 +45,7 @@ export default function App() {
   function ChatApp() {
     const dispatch = useDispatch();
     const isChecking = useSelector(({ auth }) => auth.isChecking);
-
-    const alertOnlineStatus = () => {
-      window.alert(navigator.onLine ? "online" : "offline");
-    };
+    const isOnline = useSelector(({ app }) => app.isOnline);
 
     useEffect(() => {
       const unsubFromAuth = dispatch(listenToAuthChanges());
@@ -60,6 +57,12 @@ export default function App() {
         unsubFromConnection();
       };
     }, [dispatch]);
+
+    if (!isOnline) {
+      return (
+        <LoadingView message="Application has been disconnected from the internet. Please reconnect..." />
+      );
+    }
 
     if (isChecking) {
       return <LoadingView />;
