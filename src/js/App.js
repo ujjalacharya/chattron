@@ -16,6 +16,7 @@ import { listenToConnectionChanges } from "./actions/app";
 
 import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
+import ChatCreate from "./views/ChatCreate";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 
@@ -77,6 +78,9 @@ export default function App() {
             </Route>
             <AuthRoute path="/home">
               <HomeView />
+            </AuthRoute>
+            <AuthRoute path="/chatCreate">
+              <ChatCreate />
             </AuthRoute>
             <AuthRoute path="/chat/:id">
               <ChatView />
