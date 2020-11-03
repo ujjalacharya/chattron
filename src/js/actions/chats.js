@@ -52,6 +52,6 @@ export const subscribeToChat = (chatId) => (dispatch) =>
         return userSnapshot.data();
       })
     );
-    debugger;
+    chat.joinedUsers = joinedUsers;
     dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
   });
