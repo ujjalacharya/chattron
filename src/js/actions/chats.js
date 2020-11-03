@@ -1,26 +1,21 @@
 import * as api from "../api/chats";
-import db from '../db/firestore';
+import db from "../db/firestore";
 
-export function fetchChats() {
-  return async function (dispatch) {
-    const chats = await api.fetchChats();
+export const fetchChats = () => (dispatch) =>
+  api.fetchChats().then((chats) =>
     dispatch({
       type: "CHATS_FETCH_SUCCESS",
       chats,
-    });
+    })
+  );
 
-    return chats;
-  };
-}
-
-export const createChat = (formData, userId) => (dispatch) => {
-  debugger;
+export const createChat = (formData, userId) => async (dispatch) => {
   const newChat = { ...formData };
-  const useRef = db.doc(`profiles/${userId}`);
-  newChat.admin = useRef;
-  newChat.joinedUsers = [useRef];
+  newChat.admin = db.doc(`profiles/${userId}`);
 
-  return api
-    .createChat(newChat)
-    .then((_) => dispatch({ type: "CHATS_CREATE_SUCCESS" }));
+  const chatId = await api.createChat(newChat);
+  dispatch({ type: "CHATS_CREATE_SUCCESS" });
+  await api.joinChat(userId, chatId);
+  dispatch({ type: "CHATS_JOIN_SUCCESS" });
+  return chatId;
 };
