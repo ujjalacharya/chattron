@@ -1,5 +1,5 @@
 import db from "../db/firestore";
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 
 const extractSnapshotData = (snapshot) =>
   snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -24,3 +24,12 @@ export const joinChat = async (userId, chatId) => {
     joinedUsers: firebase.firestore.FieldValue.arrayUnion(userRef),
   });
 };
+
+export const subscribeToChat = (chatId, onSubsribe) =>
+  db
+    .collection("chats")
+    .doc(chatId)
+    .onSnapshot((snapshot) => {
+      const chat = { id: snapshot.id, ...snapshot.data() };
+      onSubsribe(chat);
+    });
