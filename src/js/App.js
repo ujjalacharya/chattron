@@ -13,6 +13,7 @@ import StoreProvider from "./store/StoreProvider";
 import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
 import { listenToConnectionChanges } from "./actions/app";
+import { checkUserConnection } from "./actions/connection";
 
 import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
@@ -53,9 +54,12 @@ export default function App() {
 
       const unsubFromConnection = dispatch(listenToConnectionChanges());
 
+      const unsubFromUserConnection = dispatch(checkUserConnection());
+
       return () => {
         unsubFromAuth();
         unsubFromConnection();
+        unsubFromUserConnection();
       };
     }, [dispatch]);
 
