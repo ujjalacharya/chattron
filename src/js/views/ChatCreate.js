@@ -7,14 +7,12 @@ import { useHistory } from "react-router-dom";
 
 function ChatCreate() {
   const { register, handleSubmit } = useForm();
-  const user = useSelector(({auth}) => auth.user);
+  const user = useSelector(({ auth }) => auth.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const onSubmit = (data) => {
-    dispatch(createChat(data, user.uid))
-    .then(_ => history.push('/home'))
-}
+    dispatch(createChat(data, user.uid)).then((_) => history.push("/home"));
   };
 
   return (
