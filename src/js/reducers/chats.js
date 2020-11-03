@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer } from "@reduxjs/toolkit";
 
 function createChatReducer() {
   const joined = (state = [], action) => {
@@ -16,12 +16,29 @@ function createChatReducer() {
     }
   };
 
-  const activeChats = createReducer({}, {
-    'CHATS_SET_ACTIVE_CHAT': (state, action) => {
-      const { chat } = action;
-      state[chat.id] = chat;
+  const activeChats = createReducer(
+    {},
+    {
+      CHATS_SET_ACTIVE_CHAT: (state, action) => {
+        const { chat } = action;
+        state[chat.id] = chat;
+      },
+      CHATS_UPDATE_USER_STATE: (state, action) => {
+        const { user, chatId } = action;
+        const joinedUsers = state[chatId].joinedUsers;
+        const index = joinedUsers.findIndex((ju) => ju.uid === user.uid);
+
+        if (index < 0) {
+          return state;
+        }
+        if (joinedUsers[index].state === user.state) {
+          return state;
+        }
+
+        joinedUsers[index].state = user.state;
+      },
     }
-  })
+  );
 
   const available = (state = [], action) => {
     switch (action.type) {
@@ -40,7 +57,7 @@ function createChatReducer() {
   return combineReducers({
     joined,
     available,
-    activeChats
+    activeChats,
   });
 }
 
