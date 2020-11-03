@@ -56,8 +56,19 @@ export const subscribeToChat = (chatId) => (dispatch) =>
     dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
   });
 
-export const subscribeToProfile = (uid, chatId) => dispatch =>
+export const subscribeToProfile = (uid, chatId) => (dispatch) =>
   api.subscribeToProfile(uid, (user) => {
     console.log("changing profile!");
-    dispatch({type: 'CHATS_UPDATE_USER_STATE', user, chatId})
+    dispatch({ type: "CHATS_UPDATE_USER_STATE", user, chatId });
   });
+
+export const sendChatMessage = (message, chatId) => (dispatch, getState) => {
+  const newMessage = { ...message };
+  const { user } = getState().auth;
+  const userRef = db.doc(`profiles/${user.uid}`);
+  newMessage.author = userRef;
+
+  return api
+    .sendChatMessage(newMessage, chatId)
+    .then((_) => dispatch({ type: "CHATS_MESSAGE_SENT" }));
+};
