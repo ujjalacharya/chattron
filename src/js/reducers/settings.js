@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   isDarkTheme: false,
   playSound: true,
   showNotifications: true,
+  savable: true,
 };
 
 export default function settingsReducer(state = INITIAL_STATE, action) {

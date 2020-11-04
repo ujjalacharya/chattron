@@ -1,14 +1,17 @@
 import Notification from "../../utils/notifications";
-import Storage from '../../utils/storage';
+import Storage from "../../utils/storage";
 
 export default (store) => (next) => (action) => {
   switch (action.type) {
     case "APP_IS_ONLINE":
     case "APP_IS_OFFLINE": {
-      Notification.show({
-        title: "Connection status:",
-        body: action.isOnline ? "Online" : "Offline",
-      });
+      const { showNotifications } = store.getState().settings;
+      if (showNotifications) {
+        Notification.show({
+          title: "Connection status:",
+          body: action.isOnline ? "Online" : "Offline",
+        });
+      }
     }
     case "SETTINGS_UPDATE": {
       const { setting, value } = action;
