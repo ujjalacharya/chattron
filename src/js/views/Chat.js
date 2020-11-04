@@ -12,6 +12,7 @@ import {
   subscribeToChat,
   subscribeToProfile,
   sendChatMessage,
+  subscribeToMessages,
 } from "../actions/chats";
 
 function Chat() {
@@ -23,6 +24,7 @@ function Chat() {
 
   useEffect(() => {
     const unsubFromChat = dispatch(subscribeToChat(id));
+    dispatch(subscribeToMessages(id));
     return () => {
       unsubFromChat();
       unsubFromJoinedUsers();
