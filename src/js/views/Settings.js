@@ -1,10 +1,14 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withBaseLayout } from "../layouts/Base";
 import { updateSettings } from "../actions/settings";
 
 function Settings() {
   const dispatch = useDispatch();
+
+  const { isDarkTheme, showNotifications, playSound } = useSelector(
+    ({ settings }) => settings
+  );
 
   const handleChange = ({ target: { checked, name } }) => {
     dispatch(updateSettings(name, checked));
@@ -20,6 +24,7 @@ function Settings() {
               <div className="form-check">
                 <input
                   onChange={handleChange}
+                  checked={isDarkTheme}
                   name="isDarkTheme"
                   type="checkbox"
                   className="form-check-input"
@@ -29,6 +34,7 @@ function Settings() {
               <div className="form-check">
                 <input
                   onChange={handleChange}
+                  checked={showNotifications}
                   name="showNotifications"
                   type="checkbox"
                   className="form-check-input"
@@ -38,6 +44,7 @@ function Settings() {
               <div className="form-check">
                 <input
                   onChange={handleChange}
+                  checked={playSound}
                   name="playSound"
                   type="checkbox"
                   className="form-check-input"
