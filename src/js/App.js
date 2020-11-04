@@ -14,6 +14,7 @@ import LoadingView from "./components/shared/LoadingView";
 import { listenToAuthChanges } from "./actions/auth";
 import { listenToConnectionChanges } from "./actions/app";
 import { checkUserConnection } from "./actions/connection";
+import { loadInitialSettings } from "./actions/settings";
 
 import ChatView from "./views/Chat";
 import HomeView from "./views/Home";
@@ -51,6 +52,7 @@ export default function App() {
     const user = useSelector(({ auth }) => auth.user);
 
     useEffect(() => {
+      dispatch(loadInitialSettings());
       const unsubFromAuth = dispatch(listenToAuthChanges());
 
       const unsubFromConnection = dispatch(listenToConnectionChanges());
