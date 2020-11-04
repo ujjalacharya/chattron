@@ -102,3 +102,9 @@ export const subscribeToMessages = (chatId) => (dispatch) => {
     });
   });
 };
+
+export const registerMessageSubscription = (chatId, messageSub) => ({
+  type: "CHATS_REGISTER_MESSAGE_SUB",
+  sub: messageSub,
+  chatId,
+});
