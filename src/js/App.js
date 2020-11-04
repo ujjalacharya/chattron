@@ -41,9 +41,14 @@ function AuthRoute({ children, ...rest }) {
 }
 
 export default function App() {
-  const ContentWrapper = ({ children }) => (
-    <div className="content-wrapper">{children}</div>
-  );
+  const ContentWrapper = ({ children }) => {
+    const isDarkTheme = useSelector(({ settings }) => settings.isDarkTheme);
+    return (
+      <div className={`content-wrapper ${isDarkTheme ? "dark" : "light"}`}>
+        {children}
+      </div>
+    );
+  };
 
   function ChatApp() {
     const dispatch = useDispatch();
