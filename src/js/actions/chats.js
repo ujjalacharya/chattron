@@ -9,7 +9,6 @@ export const fetchChats = () => async (dispatch, getState) => {
   chats.forEach(
     (chat) => (chat.joinedUsers = chat.joinedUsers.map((user) => user.id))
   );
-
   const sortedChats = chats.reduce(
     (accuChats, chat) => {
       accuChats[
@@ -38,9 +37,9 @@ export const createChat = (formData, userId) => async (dispatch) => {
   newChat.admin = db.doc(`profiles/${userId}`);
 
   const chatId = await api.createChat(newChat);
-  dispatch({ type: "CHATS_JOIN_SUCCESS", chat: { ...newChat, id: chatId } });
+  dispatch({ type: "CHATS_CREATE_SUCCESS" });
   await api.joinChat(userId, chatId);
-  dispatch({ type: "CHATS_JOIN_SUCCESS" });
+  dispatch({ type: "CHATS_JOIN_SUCCESS", chat: { ...newChat, id: chatId } });
   return chatId;
 };
 
@@ -52,13 +51,13 @@ export const subscribeToChat = (chatId) => (dispatch) =>
         return userSnapshot.data();
       })
     );
+
     chat.joinedUsers = joinedUsers;
     dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
   });
 
 export const subscribeToProfile = (uid, chatId) => (dispatch) =>
   api.subscribeToProfile(uid, (user) => {
-    console.log("changing profile!");
     dispatch({ type: "CHATS_UPDATE_USER_STATE", user, chatId });
   });
 
@@ -74,14 +73,13 @@ export const sendChatMessage = (message, chatId) => (dispatch, getState) => {
 };
 
 export const subscribeToMessages = (chatId) => (dispatch) => {
-  return api.subscribeToMessages(chatId, (messages) => {
-    const chatMessages = messages.map((message) => {
-      if (message.type === "added") {
-        return { id: message.doc.id, ...message.doc.data() };
+  return api.subscribeToMessages(chatId, (changes) => {
+    const messages = changes.map((change) => {
+      if (change.type === "added") {
+        return { id: change.doc.id, ...change.doc.data() };
       }
     });
 
-    dispatch({ type: "CHATS_SET_MESSAGES", chatMessages, chatId });
-    return chatMessages;
+    return dispatch({ type: "CHATS_SET_MESSAGES", messages, chatId });
   });
 };
