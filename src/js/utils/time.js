@@ -1,5 +1,8 @@
 import { Timestamp } from "../db/firestore";
 
-export const createTimestamp = () => {
-  return Timestamp.now().toMillis().toString();
-};
+import moment from "moment";
+
+export const createTimestamp = () => Timestamp.now().toMillis().toString();
+
+export const formatTimeAgo = (timestamp) =>
+  moment(parseInt(timestamp, 10)).fromNow();
